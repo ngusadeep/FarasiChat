@@ -18,7 +18,6 @@
 
 ## Project Structure
 
-```
 
 winnie/
 │── app/
@@ -34,9 +33,8 @@ winnie/
 │── .env.example             # Environment variables (API keys, configs)
 │── README.md
 
-````
 
----
+
 
 ## Setup
 
@@ -45,36 +43,31 @@ winnie/
 ```bash
 git clone https://github.com/yourusername/winnie.git
 cd winnie
-````
 
 2. **Create and activate a virtual environment:**
 
 ```bash
 python -m venv venv
 source venv/bin/activate
-```
+
 
 3. **Install dependencies:**
 
 ```bash
 pip install -r requirements.txt
-```
+
 
 4. **Configure environment variables:**
 
 Copy `.env.example` to `.env` and add your API keys:
 
-```
+
 OPENAI_API_KEY=your_openai_api_key
-```
 
 5. **Initialize the database (optional):**
 
 ```bash
 python init_db.py
-```
-
----
 
 ## Usage
 
@@ -82,7 +75,6 @@ python init_db.py
 
 ```bash
 uvicorn app.main:app --reload
-```
 
 **Send a chat request:**
 
@@ -90,7 +82,6 @@ uvicorn app.main:app --reload
 curl -X POST http://127.0.0.1:8000/chat/ \
      -H "Content-Type: application/json" \
      -d '{"message": "Hello Winnie!"}'
-```
 
 **Sample response:**
 
@@ -98,9 +89,6 @@ curl -X POST http://127.0.0.1:8000/chat/ \
 {
   "response": "Hello! How can I assist you today?"
 }
-```
-
----
 
 ## Extending Winnie
 
@@ -117,9 +105,6 @@ MIT License © 2025
 
 ```
 
----
-
-This is **brief, professional, and well-structured**, ready for a GitHub repo.  
 
 I can also make a **version with a small diagram showing the MVC + AI flow**, which makes it look more polished and easy to understand for new developers.  
 
