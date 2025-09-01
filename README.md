@@ -115,8 +115,3 @@ curl -X POST http://127.0.0.1:8000/chat/ \
 MIT License © 2025
 
 ```
-
-✨ Next step: I can create a **small ASCII diagram (or SVG for docs)** showing the **MVC + AI flow** (User → Route → Controller → Service → Model → DB / AI).  
-
-Do you want me to include that diagram in this README?
-```
