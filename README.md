@@ -1,103 +1,114 @@
-```markdown
-# Winnie - AI Assistant
+# FarasiChat - AI Assistant
 
-**Winnie** is a modular AI assistant powered by **Gemini** via LangChain. It provides intelligent, context-aware conversations, remembers past interactions, and can be extended with tools, workflows, or additional AI features.
+**FarasiChat** is a modular AI assistant powered by a fine-tuned **Gemma model** (`Nadhari/gemma-3n-swahili-E2B-it`).  
+It provides intelligent, context-aware Swahili conversations, is built on a clean **MVC architecture**, and integrates with **PostgreSQL** for persistence.  
+The system is fully Dockerized, async-ready, and designed for production deployments.  
 
----
 
 ## Features
 
-- Intelligent, context-aware conversations with Gemini
-- Modular MVC architecture
-- Persistent or in-memory conversation memory
-- Easily extendable for tools, APIs, or workflows
-- Async and production-ready design
-- REST API endpoint for chat interactions
-
----
+- Intelligent, context-aware Swahili conversations  
+- Fine-tuned model integration with Hugging Face Transformers  
+- Modular **MVC architecture** (models, views, controllers, routes)  
+- PostgreSQL database with SQLAlchemy ORM + Alembic migrations  
+- REST API endpoints for chat and user management  
+- Async, scalable, and production-ready design  
+- Docker + Docker Compose setup for easy deployment  
 
 ## Project Structure
 
+```
 
-winnie/
+farasichat\_backend/
 │── app/
 │   ├── main.py              # API entrypoint
 │   ├── routes/              # API routes
-│   ├── controllers/         # Controllers
-│   ├── services/            # Business logic / AI calls
-│   ├── models/              # Pydantic schemas & ORM models
-│   ├── core/                # Agent setup, DB, DB session
-│   └── utils/               # Logger, helpers
-│── init\_db.py               # DB initialization (optional)
+│   ├── controllers/         # Controllers (business logic)
+│   ├── services/            # AI service (chat model, inference)
+│   ├── models/              # ORM models (SQLAlchemy)
+│   ├── schemas/             # Pydantic schemas
+│   ├── core/                # Config, DB setup, logger
+│   └── utils/               # Helpers
+│── migrations/              # Alembic migrations
+│── tests/                   # Unit tests
+│── Dockerfile
+│── docker-compose.yml
 │── requirements.txt
-│── .env.example             # Environment variables (API keys, configs)
+│── .env.example             # Env variables (DB URL, model name, etc.)
 │── README.md
 
-
+````
 
 
 ## Setup
 
-1. **Clone the repository:**
-
+### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/winnie.git
-cd winnie
+git clone https://github.com/yourusername/farasichat.git
+cd farasichat_backend
+````
 
-2. **Create and activate a virtual environment:**
+### 2. Create and activate a virtual environment
 
 ```bash
 python -m venv venv
 source venv/bin/activate
+```
 
-
-3. **Install dependencies:**
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
+```
 
+### 4. Configure environment variables
 
-4. **Configure environment variables:**
+Copy `.env.example` to `.env` and update values:
 
-Copy `.env.example` to `.env` and add your API keys:
+```env
+DATABASE_URL=postgresql://postgres:password@db:5432/farasi
+MODEL_NAME=Nadhari/gemma-3n-swahili-E2B-it
+```
 
-
-OPENAI_API_KEY=your_openai_api_key
-
-5. **Initialize the database (optional):**
+### 5. Run with Docker (recommended)
 
 ```bash
-python init_db.py
+docker-compose up --build
+```
+
 
 ## Usage
 
-**Run the server:**
+### Run the server locally
 
 ```bash
 uvicorn app.main:app --reload
+```
 
-**Send a chat request:**
+### Send a chat request
 
 ```bash
 curl -X POST http://127.0.0.1:8000/chat/ \
      -H "Content-Type: application/json" \
-     -d '{"message": "Hello Winnie!"}'
+     -d '{"prompt": "Habari yako FarasiChat?"}'
+```
 
-**Sample response:**
+### Sample response
 
 ```json
 {
-  "response": "Hello! How can I assist you today?"
+  "response": "Nzuri sana! Naweza kukusaidia vipi leo?"
 }
+```
 
-## Extending Winnie
 
-* Add tools, APIs, or workflows in `services/`
-* Integrate embeddings or semantic memory
-* Extend controllers/routes for multiple endpoints
+## Extending FarasiChat
+
+* Add new tools, APIs, or workflows in `services/`
+* Extend `controllers/` and `routes/` for new endpoints
+* Store chat history in PostgreSQL via ORM models
 * Add authentication, logging, or analytics
 
----
 
 ## License
 
@@ -105,8 +116,7 @@ MIT License © 2025
 
 ```
 
+✨ Next step: I can create a **small ASCII diagram (or SVG for docs)** showing the **MVC + AI flow** (User → Route → Controller → Service → Model → DB / AI).  
 
-I can also make a **version with a small diagram showing the MVC + AI flow**, which makes it look more polished and easy to understand for new developers.  
-
-Do you want me to do that?
+Do you want me to include that diagram in this README?
 ```
