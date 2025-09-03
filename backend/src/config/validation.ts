@@ -3,6 +3,7 @@ import * as Joi from 'joi';
 
 export const validate = (config: Record<string, unknown>) => {
   const schema = Joi.object({
+    
     NODE_ENV: Joi.string()
       .valid('development', 'production', 'test')
       .default('development'),
@@ -20,8 +21,9 @@ export const validate = (config: Record<string, unknown>) => {
     DB_USERNAME: Joi.string().required(),
     DB_PASSWORD: Joi.string().allow('').required(),
     DB_DATABASE: Joi.string().required(),
-    DB_SYNC: Joi.string().valid('true', 'false').default('false'),
-    DB_LOGGING: Joi.string().valid('true', 'false').default('false'),
+    DB_SYNC: Joi.boolean().default(false),
+    DB_LOGGING: Joi.boolean().default(false),
+    DB_SSL: Joi.string().valid('true', 'false', 'prefer').default('false'),
 
     HF_API_URL: Joi.string().uri().optional(),
     HUGGINGFACE_API_KEY: Joi.string().optional(),

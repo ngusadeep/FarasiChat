@@ -1,20 +1,34 @@
 services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: farasi_api_dev
-    ports:
-      - '${PORT:-3000}:3000'
-    env_file:
-      - .env
-    volumes:
-      - ./backend:/app # live code reload
-    depends_on:
-      - db
+  # -------------------------
+  # Farasi API (NestJS)
+  # -------------------------
+  # farasi_api:
+  #   build: .
+  #   container_name: farasi_api
+  #   restart: always
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "${PORT}:3000" # host:container
+  #   depends_on:
+  #     - farasi_db
+  #   environment:
+  #     DB_HOST: ${DB_HOST}
+  #     DB_PORT: ${DB_PORT}
+  #     DB_USERNAME: ${DB_USERNAME}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #     DB_DATABASE: ${DB_DATABASE}
+  #   volumes:
+  #     - ./:/app        # live code reload
+  #     - /app/node_modules # preserve container-installed node_modules
+  #   networks:
+  #     - farasi_net
 
-  db:
-    image: postgres:15
+  # -------------------------
+  # Farasi Database (PostgreSQL)
+  # -------------------------
+  farasi_db:
+    image: postgres:latest
     container_name: farasi_db
     restart: always
     environment:
@@ -22,9 +36,21 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
     ports:
-      - '${DB_PORT:-5438}:5432'
+      - "${DB_PORT}:5432" # host:container
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - farasi_net
 
+# -------------------------
+# Volumes
+# -------------------------
 volumes:
   postgres_data:
+
+# -------------------------
+# Networks
+# -------------------------
+networks:
+  farasi_net:
+    driver: bridge

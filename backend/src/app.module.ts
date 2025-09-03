@@ -10,6 +10,9 @@ import { LoggerModule } from 'src/lib/logger/logger.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthService } from 'src/modules/auth/services/auth.service';
 import { JwtStrategy } from 'src/modules/auth/services/jwt.strategy';
+import { ChatModule } from './chat/chat.module';
+import { ChatModule } from './modules/chat/chat.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
@@ -20,6 +23,7 @@ import { JwtStrategy } from 'src/modules/auth/services/jwt.strategy';
     SeederModule,
     LoggerModule,
     AuthModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService, JwtStrategy],

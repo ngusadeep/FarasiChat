@@ -1,3 +1,4 @@
+// src/database/database.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -14,9 +15,10 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
         username: configService.get<string>('database.username'),
         password: configService.get<string>('database.password'),
         database: configService.get<string>('database.database'),
-        entities: ['dist/**/*.entity.{ts,js}'],
-        synchronize: configService.get<boolean>('database.sync'),
+        entities: [__dirname + '/../**/*.entity.{js,ts}'],
+        synchronize: configService.get<boolean>('database.synchronize'),
         logging: configService.get<boolean>('database.logging'),
+        ssl: configService.get('database.ssl'),
       }),
       inject: [ConfigService],
     }),

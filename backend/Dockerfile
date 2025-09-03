@@ -1,17 +1,17 @@
-FROM oven/bun:latest
+# FROM node:22-bullseye
 
-WORKDIR /app
+# WORKDIR /app
 
-# Copy package files including lock
-COPY package.json bun.lockb ./
+# # Copy lock files first for caching
+# COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies
-RUN bun install
+# # Install pnpm globally and dependencies
+# RUN npm install -g pnpm \
+#   && pnpm install
 
-# Copy all source files
-COPY . .
+# # Copy all source files
+# COPY . .
 
-EXPOSE 3000
+# EXPOSE 3000
 
-# Start NestJS in dev mode with hot reload
-CMD ["bun", "run", "start:dev", "--watch"]
+# CMD ["pnpm", "run", "start:dev", "--", "--watch"]
