@@ -1,18 +1,17 @@
-FROM python:3.12-slim
+FROM oven/bun:latest
 
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y libpq-dev gcc && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements
-COPY requirements.txt .
+# Copy package files including lock
+COPY package.json bun.lockb ./
 
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN bun install
 
-# Copy app
+# Copy all source files
 COPY . .
 
-# Run app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+EXPOSE 3000
+
+# Start NestJS in dev mode with hot reload
+CMD ["bun", "run", "start:dev", "--watch"]
