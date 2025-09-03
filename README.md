@@ -1,99 +1,127 @@
 # FarasiChat - AI Assistant
 
-**FarasiChat** is a modular AI assistant powered by a fine-tuned **Gemma model** (`Nadhari/gemma-3n-swahili-E2B-it`).  
-It provides intelligent, context-aware Swahili conversations, is built on a clean **MVC architecture**, and integrates with **PostgreSQL** for persistence.  
-The system is fully Dockerized, async-ready, and designed for production deployments.  
+**FarasiChat** is a modular AI assistant powered by a fine-tuned **Gemma model** (`Nadhari/gemma-3n-swahili-E2B-it`).
+It provides intelligent, context-aware Swahili conversations, built on a **NestJS modular backend** and a **React + Vite frontend**.
+The system integrates with **PostgreSQL** (via TypeORM), is fully Dockerized, and designed for production deployments.
 
 
 ## Features
 
-- Intelligent, context-aware Swahili conversations  
-- Fine-tuned model integration with Hugging Face Transformers  
-- Modular **MVC architecture** (models, views, controllers, routes)  
-- PostgreSQL database with SQLAlchemy ORM + Alembic migrations  
-- REST API endpoints for chat and user management  
-- Async, scalable, and production-ready design  
-- Docker + Docker Compose setup for easy deployment  
+* Intelligent, context-aware Swahili conversations
+* Fine-tuned model integration with Hugging Face Transformers
+* **Backend (NestJS)** with modular architecture (`users/`, `auth/`, `chat/`, …)
+* **Frontend (React + Vite)** with reusable components and API integration
+* PostgreSQL with TypeORM + migrations
+* Authentication & authorization (JWT-based)
+* Async, scalable, and production-ready design
+* Docker + Docker Compose setup for easy deployment
+
 
 ## Project Structure
 
 ```
-
-farasichat\_backend/
-│── app/
-│   ├── main.py              # API entrypoint
-│   ├── routes/              # API routes
-│   ├── controllers/         # Controllers (business logic)
-│   ├── services/            # AI service (chat model, inference)
-│   ├── models/              # ORM models (SQLAlchemy)
-│   ├── schemas/             # Pydantic schemas
-│   ├── core/                # Config, DB setup, logger
-│   └── utils/               # Helpers
-│── migrations/              # Alembic migrations
-│── tests/                   # Unit tests
-│── Dockerfile
+farasichat/
+│── backend/                     # NestJS backend (modular)
+│   ├── src/
+│   │   ├── main.ts              # App entrypoint
+│   │   ├── app.module.ts        # Root module
+│   │   ├── config/              # DB, env, logger setup
+│   │   ├── common/              # Interceptors, guards, filters
+│   │   ├── modules/
+│   │   │   ├── users/           # User module
+│   │   │   │   ├── users.controller.ts
+│   │   │   │   ├── users.service.ts
+│   │   │   │   ├── users.module.ts
+│   │   │   │   └── entities/user.entity.ts
+│   │   │   ├── auth/            # Auth module (JWT, guards, strategies)
+│   │   │   │   ├── auth.controller.ts
+│   │   │   │   ├── auth.service.ts
+│   │   │   │   ├── auth.module.ts
+│   │   │   │   └── strategies/jwt.strategy.ts
+│   │   │   ├── chat/            # Chat module (AI assistant logic)
+│   │   │   │   ├── chat.controller.ts
+│   │   │   │   ├── chat.service.ts
+│   │   │   │   └── chat.module.ts
+│   │   └── utils/               # Helpers
+│   ├── test/                    # Unit & e2e tests
+│   ├── Dockerfile
+│   ├── ormconfig.ts
+│   ├── package.json
+│   └── .env.example
+│
+│── frontend/                    # React + Vite frontend
+│   ├── src/
+│   │   ├── components/          # UI components
+│   │   ├── pages/               # App pages
+│   │   ├── hooks/               # Custom React hooks
+│   │   ├── services/            # API calls (Axios/fetch)
+│   │   └── App.tsx              # Root component
+│   ├── public/
+│   ├── vite.config.ts
+│   ├── package.json
+│   └── .env.example
+│
 │── docker-compose.yml
-│── requirements.txt
-│── .env.example             # Env variables (DB URL, model name, etc.)
 │── README.md
-
-````
+│── LICENSE
+```
 
 
 ## Setup
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/farasichat.git
-cd farasichat_backend
-````
+cd farasichat
+```
 
-### 2. Create and activate a virtual environment
+
+### 2. Backend Setup (NestJS)
 
 ```bash
-python -m venv venv
-source venv/bin/activate
+cd backend
+npm install
+cp .env.example .env
 ```
 
-### 3. Install dependencies
+Run migrations & start dev server:
 
 ```bash
-pip install -r requirements.txt
+npm run migration:run
+npm run start:dev
 ```
 
-### 4. Configure environment variables
 
-Copy `.env.example` to `.env` and update values:
+### 3. Frontend Setup (React + Vite)
 
-```env
-DATABASE_URL=postgresql://postgres:password@db:5432/farasi
-MODEL_NAME=Nadhari/gemma-3n-swahili-E2B-it
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
 ```
 
-### 5. Run with Docker (recommended)
+
+### 4. Run with Docker (recommended)
 
 ```bash
 docker-compose up --build
 ```
 
 
-## Usage
+### 5. Usage
 
-### Run the server locally
-
-```bash
-uvicorn app.main:app --reload
-```
-
-### Send a chat request
+#### API (NestJS Backend)
 
 ```bash
-curl -X POST http://127.0.0.1:8000/chat/ \
-     -H "Content-Type: application/json" \
-     -d '{"prompt": "Habari yako FarasiChat?"}'
+POST /api/chat
+{
+  "prompt": "Habari yako FarasiChat?"
+}
 ```
 
-### Sample response
+Response:
 
 ```json
 {
@@ -101,13 +129,17 @@ curl -X POST http://127.0.0.1:8000/chat/ \
 }
 ```
 
+#### Frontend (React + Vite)
+
+* Open browser at: `http://localhost:5173`
+
 
 ## Extending FarasiChat
 
-* Add new tools, APIs, or workflows in `services/`
-* Extend `controllers/` and `routes/` for new endpoints
-* Store chat history in PostgreSQL via ORM models
-* Add authentication, logging, or analytics
+* Add new backend modules in `backend/src/modules/`
+* Add new React components or pages in `frontend/src/`
+* Extend authentication, logging, or analytics features
+* Store chat history and user data in PostgreSQL
 
 
 ## License
